@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/client"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model cc_char {
+  CHAR_NO        Int       @id @default(autoincrement())
+  CHAR_NAME      String?   @db.VarChar(256)
+  CHAR_TYPE      String?   @default("C") @db.Char(1)
+  CHAR_INFO      String?   @db.Text
+  UPD_ID         String?   @default("admin") @db.VarChar(50)
+  UPD_DT         DateTime? @updatedAt
+  REG_ID         String?   @default("admin") @db.VarChar(50)
+  REG_DT         DateTime? @default(now())
+  STD_CODE_NAME  String?   @db.VarChar(256)
+  STD_FULL_NAME  String?   @db.VarChar(256)
+  STD_INC_ID     String?   @db.VarChar(256)
+  STD_ID         String?   @db.VarChar(191)
+  STD_TOKEN      String?   @db.VarChar(256)
+  STD_ROLE       String?   @db.VarChar(191)
+  STD_ERROR_MSG  String?   @default("사랑해요.") @db.VarChar(256)
+  STD_STATUS     String?   @default("공부") @db.VarChar(256)
+  THUMBNAIL      String?   @db.VarChar(256)
+  TEMPERATURE    Float?    @default(0.5)
+  F_PENALTY      Float?    @default(0.5)
+  P_PENALTY      Float?    @default(0)
+  STD_SHORT_NAME String?   @db.VarChar(20)
+}
+
+model cc_char_chat {
+  CHAT_NO      Int       @id @default(autoincrement())
+  CHAR_NO      Int
+  CHAT_ROOM_NO Int       @default(1)
+  IS_LEARN     String?   @db.Char(1)
+  REG_DT       DateTime? @default(now())
+  UPD_ID       String?   @db.VarChar(50)
+  UPD_DT       DateTime? @updatedAt
+  CHAT_CONT    String?   @db.Text
+  REG_ID       String?   @db.VarChar(50)
+}
+
+model cc_char_chat_for_learn {
+  CHAT_LEARN_NO Int       @id @default(autoincrement())
+  CHAT_CONT     String?   @db.TinyText
+  REG_ID        String?   @db.VarChar(50)
+  REG_DT        DateTime? @default(now())
+  UPD_ID        String?   @db.VarChar(50)
+  UPD_DT        DateTime? @updatedAt
+  CHAR_NO       Int
+  CHAT_ROOM_NO  Int       @default(1)
+}
+
+model cc_char_chat_log {
+  CHAT_LOG_NO  Int       @id @default(autoincrement())
+  CHAR_NO      Int
+  CHAT_ROOM_NO Int       @default(1)
+  IS_LEARN     String?   @db.Char(1)
+  REG_DT       DateTime  @default(now())
+  UPD_ID       String?   @default("admin") @db.VarChar(50)
+  UPD_DT       DateTime? @updatedAt
+  CHAT_CONT    String?   @db.Text
+  REG_ID       String?   @default("admin") @db.VarChar(50)
+}
+
+model cc_char_chat_premium {
+  CHAT_NO      Int       @id @default(autoincrement())
+  CHAR_NO      String    @db.VarChar(250)
+  CHAT_ROOM_NO String    @db.VarChar(250)
+  IS_LEARN     String?   @db.Char(1)
+  REG_DT       DateTime? @default(now())
+  UPD_ID       String?   @db.VarChar(50)
+  UPD_DT       DateTime? @updatedAt
+  CHAT_CONT    String?   @db.Text
+  REG_ID       String?   @db.VarChar(50)
+}
+
+model cc_user {
+  USER_NO                     Int       @id @default(autoincrement())
+  USER_NAME                   String?   @db.VarChar(256)
+  REG_ID                      String?   @default("admin") @db.VarChar(50)
+  REG_DT                      DateTime? @default(now())
+  UPD_ID                      String?   @default("admin") @db.VarChar(50)
+  UPD_DT                      DateTime? @updatedAt
+  USER_DISCORD_ID             String?   @db.VarChar(256)
+  PREMIUM_REMEMBER_CONV_COUNT Int?      @default(0)
+  PREMIUM_CURRENT_ROOM_NO     Int?      @default(1)
+  TODAY_USER_USAGE            Int?      @default(0)
+}
